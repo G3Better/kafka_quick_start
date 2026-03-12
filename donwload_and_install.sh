@@ -9,9 +9,12 @@ fi
 
 ADVERTISED_IP="$1"
 
+CONFLUENT_VERSION="7.7.0"
+CONFLUENT_MAJOR="7.7"
+
 set -xe
 
-# Используем curl -O для скачивания файла
+# Используем curl -O для скачивания файла Kafka
 curl -O https://dlcdn.apache.org/kafka/4.2.0/kafka_2.13-4.2.0.tgz
 
 # Распаковка
@@ -32,6 +35,28 @@ sed -i "s|advertised.listeners=PLAINTEXT://localhost:9092|advertised.listeners=P
 # Запуск Kafka в фоновом режиме (флаг -daemon)
 bin/kafka-server-start.sh -daemon config/server.properties
 
+# Даем Kafka несколько секунд на запуск, прежде чем стартовать Schema Registry
+sleep 5
+
+cd .. # Возвращаемся в директорию, откуда запускался скрипт
+
+# Скачивание Confluent Community Edition
+curl -O https://packages.confluent.io/archive/${CONFLUENT_MAJOR}/confluent-community-${CONFLUENT_VERSION}.tar.gz
+
+# Распаковка
+tar -xzf confluent-community-${CONFLUENT_VERSION}.tar.gz
+cd confluent-${CONFLUENT_VERSION}
+
+# Настройка Schema Registry: указываем адрес брокера Kafka
+# По умолчанию там указан localhost:9092, но для надежности пропишем ADVERTISED_IP
+sed -i "s|kafkastore.bootstrap.servers=PLAINTEXT://localhost:9092|kafkastore.bootstrap.servers=PLAINTEXT://${ADVERTISED_IP}:9092|g" etc/schema-registry/schema-registry.properties
+
+# Запуск Schema Registry в фоновом режиме
+bin/schema-registry-start -daemon etc/schema-registry/schema-registry.properties
+
 set +xe
 
-echo "Kafka успешно запущена в фоновом режиме на IP: ${ADVERTISED_IP}"
+echo "======================================================"
+echo "Kafka успешно запущена в фоновом режиме на IP: ${ADVERTISED_IP}:9092"
+echo "Schema Registry успешно запущена на IP: ${ADVERTISED_IP}:8081"
+echo "======================================================"
