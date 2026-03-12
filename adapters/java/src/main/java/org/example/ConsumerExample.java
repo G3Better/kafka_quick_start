@@ -13,10 +13,10 @@ import java.util.Properties;
 
 public class ConsumerExample {
     public static void main(String[] args) {
-        String schemaRegistryUrl = "http://158.160.230.112:8081";
+        String schemaRegistryUrl = "http://<ip>:8081";
 
         Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "158.160.230.112:9092");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "<ip>:9092");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "my-user-consumer-group");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
@@ -26,7 +26,7 @@ public class ConsumerExample {
         props.put("schema.registry.url", schemaRegistryUrl);
 
         KafkaConsumer<String, GenericRecord> consumer = new KafkaConsumer<>(props);
-        String topic = "quickstart-events"; // Укажите ваш топик
+        String topic = "<topic>"; // Укажите ваш топик
 
         try {
             consumer.subscribe(Collections.singletonList(topic));
