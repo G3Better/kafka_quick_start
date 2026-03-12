@@ -1,0 +1,9 @@
+   akhq:
+     connections:
+       my-cluster:
+         properties:
+           bootstrap.servers: "localhost:9092"
+         # Если вы используете Schema Registry, раскомментируйте строки ниже:
+         # schema-registry:
+         #   url: "http://your_schema_registry:8081"
+   

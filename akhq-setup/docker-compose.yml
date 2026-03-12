@@ -1,0 +1,12 @@
+version: '3.6'
+services:
+  akhq:
+    image: tchiotludo/akhq
+    network_mode: "host"
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            my-cluster:
+              properties:
+                bootstrap.servers: "localhost:9092"

@@ -22,7 +22,7 @@ public class ProducerExample {
 
         // 1. Настройки Producer
         Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "158.160.230.112:9092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "<ip>:9092");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         // Используем стандартный сериализатор массивов байтов вместо Confluent
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
@@ -30,7 +30,7 @@ public class ProducerExample {
         // 2. Создание экземпляра KafkaProducer (ключ - String, значение - byte[])
         KafkaProducer<String, byte[]> producer = new KafkaProducer<>(props);
 
-        String topic = "quickstart-events";
+        String topic = "<topic>";
 
         // Определяем схему User
         String userSchemaString = "{\n"

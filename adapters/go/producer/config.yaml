@@ -1,0 +1,7 @@
+topic: <topic>
+schema.registry.url: http://<ip>:8081/
+bootstrap.servers: <ip>:9092
+group.id: my-consumer-group
+acks: -1
+enable.auto.commit: true
+auto.offset.reset: earliest
